@@ -131,9 +131,12 @@ const char *ms_get_bitStream( msData *ms );
  * Returns NULL on error (such as if ms_decode_bits() has not been run) */
 const char *ms_get_charStream( msData *ms );
 
+#ifdef WIN32
+char* strrev( char *str );
+#else
 /* Reverses a string in place */
 void strrev( char *str );
-
+#endif
 
 
 /* Find Peaks Functions */

@@ -112,31 +112,44 @@ void CardDetect::processCard() {
 		if( card->type == MagCard::CARD_AAA )
 			card->accountIssuer = "AAA";
 	}
-
 }
 
+#ifdef WIN32
+issuer* makeIssuer(const char* name, const char* abb, const char* fmt) {
+    issuer* i = new issuer();
+    i->name = name;
+    i->abbreviation = abb;
+    i->format = fmt;
+    return i;
+}
+
+#define ISSUER(name,abb,fmt) *makeIssuer(name, abb, fmt)
+#else
+#define ISSUER(name,abb,fmt) (struct issuer) {name, abb, fmt};
+#endif
+
 void CardDetect::aamvaIssuerList() {
-	issuerList[ "636026" ] =  (struct issuer) { "Arizona", "AZ", "L" };
-	issuerList[ "0636021" ] = (struct issuer) { "Arkansas", "AR", "" };
-	issuerList[ "636014" ] =  (struct issuer) { "California", "CA", "L" };
-	issuerList[ "636020" ] =  (struct issuer) { "Colorado", "CO", "NN-NNN-NNNN" };
-	issuerList[ "636010" ] =  (struct issuer) { "Florida", "FL", "LNNN-NNN-NN-NNN-N" };
-	issuerList[ "636018" ] =  (struct issuer) { "Iowa", "IA", "NNNLLNNNN" };
-	issuerList[ "636022" ] =  (struct issuer) { "Kansas", "KS", "KNN-NN-NNNN" };
-	issuerList[ "636007" ] =  (struct issuer) { "Louisiana", "LA", "" };
-	issuerList[ "636003" ] =  (struct issuer) { "Maryland", "MD", "L-NNN-NNN-NNN-NNN" };
-	issuerList[ "636032" ] =  (struct issuer) { "Michigan", "MI", "L NNN NNN NNN NNN" };
-	issuerList[ "636038" ] =  (struct issuer) { "Minnesota", "MN", "L" };
-	issuerList[ "636030" ] =  (struct issuer) { "Missouri", "MO", "L" };
-	issuerList[ "636039" ] =  (struct issuer) { "New Hampshire", "NH", "NNLLLNNNN" };
-	issuerList[ "636009" ] =  (struct issuer) { "New Mexico", "NM", "" };
-	issuerList[ "636023" ] =  (struct issuer) { "Ohio", "OH", "LLNNNNNN" };
-	issuerList[ "636025" ] =  (struct issuer) { "Pennsylvania", "PA", "NN NNN NNN" };
-	issuerList[ "636005" ] =  (struct issuer) { "South Carolina", "SC", "" };
-	issuerList[ "636015" ] =  (struct issuer) { "Texas", "TX", "" };
-	issuerList[ "636024" ] =  (struct issuer) { "Vermont", "VT", "NNNNNNNL" };
-	issuerList[ "636031" ] =  (struct issuer) { "Wisconsin", "WI", "LNNN-NNNN-NNNN-NN" };
-	issuerList[ "636027" ] =  (struct issuer) { "State Dept (USA)", "US-DoS", "" };
+    issuerList[ "636026" ] =  ISSUER( "Arizona", "AZ", "L");
+    issuerList[ "0636021" ] = ISSUER( "Arkansas", "AR", "");
+    issuerList[ "636014" ] =  ISSUER( "California", "CA", "L");
+    issuerList[ "636020" ] =  ISSUER( "Colorado", "CO", "NN-NNN-NNNN");
+    issuerList[ "636010" ] =  ISSUER( "Florida", "FL", "LNNN-NNN-NN-NNN-N");
+    issuerList[ "636018" ] =  ISSUER( "Iowa", "IA", "NNNLLNNNN");
+    issuerList[ "636022" ] =  ISSUER( "Kansas", "KS", "KNN-NN-NNNN");
+    issuerList[ "636007" ] =  ISSUER( "Louisiana", "LA", "");
+    issuerList[ "636003" ] =  ISSUER( "Maryland", "MD", "L-NNN-NNN-NNN-NNN");
+    issuerList[ "636032" ] =  ISSUER( "Michigan", "MI", "L NNN NNN NNN NNN");
+    issuerList[ "636038" ] =  ISSUER( "Minnesota", "MN", "L");
+    issuerList[ "636030" ] =  ISSUER( "Missouri", "MO", "L");
+    issuerList[ "636039" ] =  ISSUER( "New Hampshire", "NH", "NNLLLNNNN");
+    issuerList[ "636009" ] =  ISSUER( "New Mexico", "NM", "");
+    issuerList[ "636023" ] =  ISSUER( "Ohio", "OH", "LLNNNNNN");
+    issuerList[ "636025" ] =  ISSUER( "Pennsylvania", "PA", "NN NNN NNN");
+    issuerList[ "636005" ] =  ISSUER( "South Carolina", "SC", "");
+    issuerList[ "636015" ] =  ISSUER( "Texas", "TX", "");
+    issuerList[ "636024" ] =  ISSUER( "Vermont", "VT", "NNNNNNNL");
+    issuerList[ "636031" ] =  ISSUER( "Wisconsin", "WI", "LNNN-NNNN-NNNN-NN");
+    issuerList[ "636027" ] =  ISSUER( "State Dept (USA)", "US-DoS", "");
 	
 	/* Exceptions:
 	 * Arkansas --	Inexplicably, they put a leading 0 on their IIN.  This
@@ -148,19 +161,19 @@ void CardDetect::aamvaIssuerList() {
 	 */
 
 	//Formatting information is not available for Canada right now
-	issuerList[ "636028" ] =  (struct issuer) { "British Columbia", "BC", "" };
-	issuerList[ "636017" ] =  (struct issuer) { "New Brunswick", "NB", "" };
-	issuerList[ "636016" ] =  (struct issuer) { "Newfoundland", "NL", "" };
-	issuerList[ "636013" ] =  (struct issuer) { "Nova Scotia", "NS", "" };
-	issuerList[ "636012" ] =  (struct issuer) { "Ontario", "ON", "" };
-	issuerList[ "636044" ] =  (struct issuer) { "Saskatchewan", "SK", "" };
+    issuerList[ "636028" ] =  ISSUER( "British Columbia", "BC", "");
+    issuerList[ "636017" ] =  ISSUER( "New Brunswick", "NB", "");
+    issuerList[ "636016" ] =  ISSUER( "Newfoundland", "NL", "");
+    issuerList[ "636013" ] =  ISSUER( "Nova Scotia", "NS", "");
+    issuerList[ "636012" ] =  ISSUER( "Ontario", "ON", "");
+    issuerList[ "636044" ] =  ISSUER( "Saskatchewan", "SK", "");
 
 	//These may or may not have magstripes.  I'm including them in case they do
-	issuerList[ "604427" ] =  (struct issuer) { "American Samoa", "AS", "" };
-	issuerList[ "636019" ] =  (struct issuer) { "Guam", "GU", "" };
-	issuerList[ "636062" ] =  (struct issuer) { "US Virgin Islands", "US-VI", "" };
-	issuerList[ "636056" ] =  (struct issuer) { "Coahuila", "MX-COA", "" };
-	issuerList[ "636057" ] =  (struct issuer) { "Hidalgo", "MX-HID", "" };
+    issuerList[ "604427" ] =  ISSUER( "American Samoa", "AS", "");
+    issuerList[ "636019" ] =  ISSUER( "Guam", "GU", "");
+    issuerList[ "636062" ] =  ISSUER( "US Virgin Islands", "US-VI", "");
+    issuerList[ "636056" ] =  ISSUER( "Coahuila", "MX-COA", "");
+    issuerList[ "636057" ] =  ISSUER( "Hidalgo", "MX-HID", "");
 
 }
 void CardDetect::aamvaCardCheck( QString expDate ) {
